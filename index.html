@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KIM SONW - Game Optimizer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090b10',
+                        cardBg: '#12151e',
+                        borderCyan: '#00d2ff',
+                        btnRed: '#ff3b30',
+                        btnGreen: '#24d07b',
+                        btnBlue: '#2b7fff'
+                    },
+                    boxShadow: {
+                        'glow-cyan': '0 0 25px rgba(0, 210, 255, 0.45)',
+                        'glow-green': '0 0 20px rgba(36, 208, 123, 0.4)',
+                        'glow-red': '0 0 20px rgba(255, 59, 48, 0.4)',
+                        'glow-blue': '0 0 20px rgba(43, 127, 255, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05070a;
+            color: #ffffff;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090b10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+
+        .backdrop-blur-custom {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .modal-enter {
+            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .toast-enter {
+            animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes toastIn {
+            0% { opacity: 0; transform: translate(-50%, -20px); }
+            100% { opacity: 1; transform: translate(-50%, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 overflow-x-hidden">
+
+    <!-- Mobile Frame Container -->
+    <div class="w-full max-w-md h-screen sm:h-[844px] bg-[#090b10] sm:rounded-[40px] shadow-2xl flex flex-col justify-between overflow-hidden relative border border-gray-800/50">
+
+        <!-- Header -->
+        <header class="flex items-center justify-between px-6 pt-10 pb-4 bg-[#090b10]/90 backdrop-blur z-10 border-b border-gray-800/40">
+            <button id="btnBack" class="flex items-center text-gray-300 hover:text-white transition active:scale-95 text-sm font-semibold">
+                <i class="fa-solid font-bold text-lg mr-2">&larr;</i> Back
+            </button>
+            
+            <div class="text-center">
+                <h1 class="text-lg font-black tracking-wider uppercase text-white leading-tight">KIM SONW</h1>
+                <p class="text-[10px] tracking-widest text-gray-400 font-medium uppercase">BY KIM SONW</p>
+            </div>
+
+            <button id="btnMenu" class="text-gray-300 hover:text-white transition active:scale-95 text-xl px-2">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 px-6 py-4 flex flex-col items-center justify-between overflow-y-auto">
+
+            <!-- Profile Avatar Section -->
+            <div class="my-3 relative group">
+                <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 shadow-glow-cyan transition duration-500">
+                    <img src="https://placehold.co/200x200/1e1e2f/00d2ff?text=KIM+SONW" 
+                         alt="Avatar Profile" 
+                         class="w-full h-full rounded-full object-cover border-2 border-[#090b10]">
+                </div>
+            </div>
+
+            <!-- Toggles Card Container -->
+            <div class="w-full bg-[#12151e] rounded-3xl p-5 border border-gray-800/60 shadow-xl space-y-4">
+
+                <!-- Toggle 1: EXTRACTLY -->
+                <div class="flex items-center justify-between pb-3.5 border-b border-gray-800/60">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">💀</span>
+                        <span class="font-bold text-sm text-gray-200 tracking-wide">EXTRACTLY</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggleExtractly" class="sr-only peer">
+                        <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                </div>
+
+                <!-- Toggle 2: REG FILES -->
+                <div class="flex items-center justify-between pb-3.5 border-b border-gray-800/60">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">🎯</span>
+                        <span class="font-bold text-sm text-gray-200 tracking-wide">REG FILES</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggleRegFiles" class="sr-only peer">
+                        <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                </div>
+
+                <!-- Toggle 3: BOOST RAM -->
+                <div class="flex items-center justify-between pb-3.5 border-b border-gray-800/60">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">🚀</span>
+                        <span class="font-bold text-sm text-gray-200 tracking-wide">BOOST RAM</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggleBoostRam" class="sr-only peer">
+                        <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                </div>
+
+                <!-- Toggle 4: FIX RUNG -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">⚙️</span>
+                        <span class="font-bold text-sm text-gray-200 tracking-wide">FIX RUNG</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggleFixRung" class="sr-only peer">
+                        <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- STARTING FILES Segmented Bar -->
+            <div class="w-full my-4">
+                <p class="text-center text-xs font-bold tracking-widest text-gray-400 mb-3 uppercase">STARTING FILES</p>
+                <div class="bg-[#12151e] p-1.5 rounded-2xl border border-gray-800/80 flex items-center relative">
+                    <button id="btnStateOn" class="flex-1 py-3.5 rounded-xl font-black text-sm tracking-wider transition-all duration-300 text-gray-400 z-10">
+                        ON
+                    </button>
+                    <button id="btnStateOff" class="flex-1 py-3.5 rounded-xl font-black text-sm tracking-wider transition-all duration-300 text-white bg-gradient-to-r from-red-600 to-rose-500 shadow-glow-red z-10">
+                        OFF
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Toast Notification -->
+        <div id="toastNotification" class="hidden fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-[#38bdf8] text-white px-6 py-3 rounded-2xl shadow-2xl font-bold text-center text-sm toast-enter border border-white/20 min-w-[240px]">
+            <span id="toastText">Đã bật REG FILES</span>
+        </div>
+
+        <!-- Game Launcher Screen -->
+        <div id="gameLauncherScreen" class="hidden absolute inset-0 z-50 bg-[#090a0f] flex flex-col justify-between p-6 select-none overflow-hidden transition-all duration-500">
+            <div class="absolute inset-0 bg-cover bg-center opacity-40 scale-105" id="gameBg" style="background-image: url('https://placehold.co/800x1200/0f172a/00d2ff?text=GARENA+FREE+FIRE+MAX');"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90"></div>
+
+            <div class="relative z-10 flex items-center justify-between pt-4">
+                <div class="flex items-center space-x-2">
+                    <span id="gameBadgeHeader" class="px-3 py-1 bg-gradient-to-r from-red-600 to-orange-600 rounded-lg text-white font-black text-xs uppercase">
+                        Garena Free Fire
+                    </span>
+                    <span id="gameVersionBadge" class="px-2 py-1 bg-gray-800/80 rounded-md text-[10px] text-gray-300 font-mono">
+                        v1.108.2 (OPTIMIZED)
+                    </span>
+                </div>
+                <button onclick="exitGameSimulation()" class="px-3 py-1.5 bg-black/60 text-white rounded-xl text-xs font-bold border border-white/10 flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Thoát Game</span>
+                </button>
+            </div>
+
+            <div class="relative z-10 flex flex-col items-center justify-center text-center my-auto space-y-4">
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-amber-500 via-red-600 to-purple-700 p-1 shadow-2xl animate-pulse">
+                    <div class="w-full h-full bg-[#12151e] rounded-[22px] flex flex-col items-center justify-center border border-white/20">
+                        <span class="text-4xl" id="launcherIcon">🔥</span>
+                        <span class="font-black text-xs text-amber-400 mt-1" id="launcherGameName">FREE FIRE</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 id="launcherTitleText" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-red-500 uppercase">
+                        Đang khởi chạy Free Fire
+                    </h2>
+                    <p id="gameStatusText" class="text-xs text-cyan-300 font-mono mt-1">
+                        [KIM SONW Engine] Đang áp dụng cấu hình VIP...
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative z-10 space-y-3 pb-6">
+                <div class="flex justify-between items-center text-xs font-mono">
+                    <span id="loadingPercentText" class="text-amber-400 font-bold">Đang tải tài nguyên... 0%</span>
+                    <span class="text-gray-400 text-[10px]">Ping: <span class="text-emerald-400 font-bold">18ms</span></span>
+                </div>
+
+                <div class="w-full h-3.5 bg-gray-900/90 rounded-full border border-gray-700/80 p-0.5 overflow-hidden">
+                    <div id="gameLoadingBar" class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-emerald-400 rounded-full transition-all duration-200 w-0"></div>
+                </div>
+
+                <p class="text-center text-[10px] text-gray-500">
+                    Được tối ưu hoá độc quyền bởi <span class="text-gray-300 font-bold">KIM SONW</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Extractly Modal -->
+        <div id="modalExtractly" class="hidden fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-custom">
+            <div class="bg-[#12151e] border border-cyan-500/30 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl modal-enter">
+                <div class="px-6 py-4 flex items-center justify-between border-b border-gray-800/80">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">💀</span>
+                        <div>
+                            <h3 class="font-black text-base text-white">EXTRACTLY READY</h3>
+                            <p class="text-[11px] text-gray-400">Cấu hình khởi chạy game</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-800/50">
+                        ONLINE
+                    </span>
+                </div>
+                <div class="p-5 space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase mb-2">📱 HỆ ĐIỀU HÀNH:</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="optAndroid" onclick="selectOS('Android')" class="os-card border-2 border-gray-800 bg-[#161a26] p-3 rounded-2xl flex flex-col items-center justify-center">
+                                <span class="text-2xl mb-1">🤖</span>
+                                <span class="font-bold text-sm text-white">Android</span>
+                                <span class="text-[10px] text-gray-400">APK / Direct</span>
+                            </button>
+                            <button id="optIOS" onclick="selectOS('iOS')" class="os-card border-2 border-blue-500 bg-blue-600/30 shadow-glow-blue p-3 rounded-2xl flex flex-col items-center justify-center">
+                                <span class="text-2xl mb-1">🍏</span>
+                                <span class="font-bold text-sm text-white">iOS</span>
+                                <span class="text-[10px] text-gray-300">iPhone / iPad</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-400 uppercase mb-2">🎮 PHIÊN BẢN GAME:</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="optFFNormal" onclick="selectFF('FFNormal')" class="ff-card border-2 border-blue-500 bg-blue-600/30 shadow-glow-blue p-3 rounded-2xl flex flex-col items-center justify-center">
+                                <span class="text-2xl mb-1">🔥</span>
+                                <span class="font-bold text-sm text-white">Free Fire</span>
+                                <span class="text-[10px] text-gray-300">Bản Thường</span>
+                            </button>
+                            <button id="optFFMax" onclick="selectFF('FFMax')" class="ff-card border-2 border-gray-800 bg-[#161a26] p-3 rounded-2xl flex flex-col items-center justify-center">
+                                <span class="text-2xl mb-1">⚡</span>
+                                <span class="font-bold text-sm text-white">Free Fire Max</span>
+                                <span class="text-[10px] text-gray-400">Bản Ultra HD</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Phần tinh chỉnh cấu hình riêng cho từng phiên bản -->
+                    <div id="gameExtraConfig" class="bg-[#0a0d14] p-3 rounded-2xl border border-gray-800 text-xs space-y-1.5">
+                        <div class="text-amber-400 font-bold flex items-center justify-between">
+                            <span id="configTitleMode">⚡ Chế độ: Free Fire Thường</span>
+                            <span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded">Sẵn sàng</span>
+                        </div>
+                        <p id="configDescMode" class="text-gray-400 text-[11px]">Tối ưu hóa độ nhạy, giảm ping, fix lag mượt mà 60 FPS.</p>
+                    </div>
+
+                    <div class="space-y-2.5 pt-1">
+                        <button onclick="launchGame()" class="w-full py-3.5 bg-emerald-500 text-white font-black text-sm rounded-2xl shadow-glow-green">
+                            🚀 VÀO GAME NGAY
+                        </button>
+                        <button onclick="closeExtractlyModal()" class="w-full py-3 bg-[#1e2333] text-red-400 font-bold text-xs rounded-2xl border border-red-500/20">
+                            ✕ Tắt Extractly
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reg Files Modal -->
+        <div id="modalRegFiles" class="hidden fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-custom">
+            <div class="bg-[#12151e] border border-blue-500/30 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl modal-enter">
+                <div class="bg-blue-600 px-5 py-3.5 flex items-center justify-center space-x-2">
+                    <span class="text-xl">🎯</span>
+                    <h3 class="font-black text-base text-white">Cài đặt REG FILES</h3>
+                </div>
+                <div class="p-5">
+                    <div class="bg-[#0a0d14] border border-gray-800/80 rounded-2xl p-4 font-mono text-xs text-emerald-400 min-h-[190px] flex flex-col justify-start space-y-3">
+                        <div id="terminalConsole" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boost Ram Modal -->
+        <div id="modalBoostRam" class="hidden fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-custom">
+            <div class="bg-[#12151e] border border-blue-500/30 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl modal-enter">
+                <div class="bg-blue-600 px-5 py-3.5 flex items-center justify-center space-x-2">
+                    <span class="text-xl">🚀</span>
+                    <h3 class="font-black text-base text-white">Tối ưu hệ thống</h3>
+                </div>
+                <div class="p-6 flex flex-col items-center justify-center space-y-5">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/40">
+                        <i class="fa-solid fa-check text-3xl text-emerald-400"></i>
+                    </div>
+                    <h4 class="font-black text-lg text-emerald-400 text-center">Boost RAM thành công!</h4>
+                    <button onclick="closeModal('modalBoostRam')" class="w-full py-3 bg-gray-200 text-gray-900 font-bold text-sm rounded-xl">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fix Rung Modal -->
+        <div id="modalFixRung" class="hidden fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/75 backdrop-blur-custom">
+            <div class="bg-[#12151e] border border-purple-500/30 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl modal-enter">
+                <div class="bg-purple-600 px-5 py-3.5 flex items-center justify-center space-x-2">
+                    <span class="text-xl">⚙️</span>
+                    <h3 class="font-black text-base text-white">Kích hoạt FIX RUNG</h3>
+                </div>
+                <div class="p-6 flex flex-col items-center justify-center space-y-5">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/40">
+                        <i class="fa-solid fa-check text-3xl text-emerald-400"></i>
+                    </div>
+                    <h4 class="font-black text-lg text-emerald-400 text-center">Fix RUNG thành công!</h4>
+                    <button onclick="closeModal('modalFixRung')" class="w-full py-3 bg-gray-200 text-gray-900 font-bold text-sm rounded-xl">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generic Alert Modal -->
+        <div id="modalGenericAlert" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-custom">
+            <div class="bg-[#12151e] border border-gray-700 rounded-3xl w-full max-w-xs overflow-hidden shadow-2xl p-5 text-center space-y-4 modal-enter">
+                <i class="fa-solid fa-circle-info text-3xl text-cyan-400"></i>
+                <h3 id="genericAlertTitle" class="font-bold text-base text-white">KIM SONW Profile</h3>
+                <p id="genericAlertMessage" class="text-xs text-gray-300">Phiên bản tối ưu game VIP v2.4 đã sẵn sàng.</p>
+                <button onclick="closeModal('modalGenericAlert')" class="w-full py-2.5 bg-cyan-600 text-white font-bold text-xs rounded-xl">Đồng ý</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const toggleExtractly = document.getElementById('toggleExtractly');
+        const toggleRegFiles = document.getElementById('toggleRegFiles');
+        const toggleBoostRam = document.getElementById('toggleBoostRam');
+        const toggleFixRung = document.getElementById('toggleFixRung');
+        const btnStateOn = document.getElementById('btnStateOn');
+        const btnStateOff = document.getElementById('btnStateOff');
+        const toastNotification = document.getElementById('toastNotification');
+        const toastText = document.getElementById('toastText');
+
+        let selectedOSName = 'iOS';
+        let selectedFFName = 'Free Fire';
+
+        function showToast(message) {
+            toastText.textContent = message;
+            toastNotification.classList.remove('hidden');
+            setTimeout(() => { toastNotification.classList.add('hidden'); }, 2500);
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        toggleExtractly.addEventListener('change', function() { if (this.checked) openModal('modalExtractly'); });
+        function closeExtractlyModal() { toggleExtractly.checked = false; closeModal('modalExtractly'); }
+        function launchGame() { closeModal('modalExtractly'); startFullGameSimulation(); }
+
+        function selectOS(type) {
+            selectedOSName = type;
+            document.getElementById('optAndroid').className = type === 'Android' ? "os-card border-2 border-blue-500 bg-blue-600/30 shadow-glow-blue p-3 rounded-2xl flex flex-col items-center justify-center" : "os-card border-2 border-gray-800 bg-[#161a26] p-3 rounded-2xl flex flex-col items-center justify-center";
+            document.getElementById('optIOS').className = type === 'iOS' ? "os-card border-2 border-blue-500 bg-blue-600/30 shadow-glow-blue p-3 rounded-2xl flex flex-col items-center justify-center" : "os-card border-2 border-gray-800 bg-[#161a26] p-3 rounded-2xl flex flex-col items-center justify-center";
+        }
+
+        function selectFF(type) {
+            selectedFFName = type === 'FFNormal' ? 'Free Fire' : 'Free Fire Max';
+            
+            const normalCard = document.getElementById('optFFNormal');
+            const maxCard = document.getElementById('optFFMax');
+            const titleMode = document.getElementById('configTitleMode');
+            const descMode = document.getElementById('configDescMode');
+
+            if (type === 'FFNormal') {
+                normalCard.className = "ff-card border-2 border-blue-500 bg-blue-600/30 shadow-glow-blue p-3 rounded-2xl flex flex-col items-center justify-center";
+                maxCard.className = "ff-card border-2 border-gray-800 bg-[#161a26] p-3 rounded-2xl flex flex-col items-center justify-center";
+                titleMode.textContent = "⚡ Chế độ: Free Fire Thường";
+                descMode.textContent = "Tối ưu hóa độ nhạy, giảm dung lượng đồ họa, fix lag mượt mà 60 FPS.";
+            } else {
+                normalCard.className = "ff-card border-2 border-gray-800 bg-[#161a26] p-3 rounded-2xl flex flex-col items-center justify-center";
+                maxCard.className = "ff-card border-2 border-blue-500 bg-blue-600/30 shadow-glow-blue p-3 rounded-2xl flex flex-col items-center justify-center";
+                titleMode.textContent = "⚡ Chế độ: Free Fire Max Ultra";
+                descMode.textContent = "Mở khóa đồ họa siêu nét, FPS cao, tối ưu hóa hiệu suất GPU tối đa.";
+            }
+        }
+
+        let gameProgressInterval = null;
+        function startFullGameSimulation() {
+            const launcherScreen = document.getElementById('gameLauncherScreen');
+            const loadingBar = document.getElementById('gameLoadingBar');
+            const percentText = document.getElementById('loadingPercentText');
+            const statusText = document.getElementById('gameStatusText');
+            const versionBadge = document.getElementById('gameVersionBadge');
+            const gameBadgeHeader = document.getElementById('gameBadgeHeader');
+            const launcherIcon = document.getElementById('launcherIcon');
+            const launcherGameName = document.getElementById('launcherGameName');
+            const launcherTitleText = document.getElementById('launcherTitleText');
+
+            // Cập nhật linh hoạt theo phiên bản game được chọn
+            versionBadge.textContent = `${selectedFFName} (${selectedOSName})`;
+            launcherTitleText.textContent = `Đang khởi chạy ${selectedFFName}`;
+            
+            if (selectedFFName === 'Free Fire Max') {
+                gameBadgeHeader.textContent = 'Free Fire Max Ultra';
+                launcherIcon.textContent = '⚡';
+                launcherGameName.textContent = 'FF MAX';
+            } else {
+                gameBadgeHeader.textContent = 'Garena Free Fire';
+                launcherIcon.textContent = '🔥';
+                launcherGameName.textContent = 'FREE FIRE';
+            }
+
+            launcherScreen.classList.remove('hidden');
+            loadingBar.style.width = '0%';
+            
+            let progress = 0;
+            if (gameProgressInterval) clearInterval(gameProgressInterval);
+
+            gameProgressInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 8) + 4;
+                if (progress > 100) progress = 100;
+                loadingBar.style.width = progress + '%';
+                percentText.textContent = `Đang tải dữ liệu ${selectedFFName}... ${progress}%`;
+
+                if (progress === 100) {
+                    clearInterval(gameProgressInterval);
+                    setTimeout(() => { showToast(`🎮 Khởi chạy thành công ${selectedFFName}!`); }, 400);
+                }
+            }, 180);
+        }
+
+        function exitGameSimulation() {
+            if (gameProgressInterval) clearInterval(gameProgressInterval);
+            document.getElementById('gameLauncherScreen').classList.add('hidden');
+            showToast('Đã quay lại Profile KIM SONW');
+        }
+
+        toggleRegFiles.addEventListener('change', function() {
+            if (this.checked) {
+                openModal('modalRegFiles');
+                const consoleEl = document.getElementById('terminalConsole');
+                consoleEl.innerHTML = '';
+                const lines = [`$ Reading ${selectedFFName} touch config...`, "$ Calibrating DPI & 120Hz...", "$ Injecting VIP AimAssist...", "$ Applying smooth tracking..."];
+                let idx = 0;
+                const timer = setInterval(() => {
+                    if (idx < lines.length) {
+                        const p = document.createElement('p');
+                        p.textContent = lines[idx++];
+                        consoleEl.appendChild(p);
+                    } else {
+                        clearInterval(timer);
+                        setTimeout(() => { closeModal('modalRegFiles'); showToast(`Đã bật REG FILES cho ${selectedFFName}`); }, 800);
+                    }
+                }, 600);
+            }
+        });
+
+        toggleBoostRam.addEventListener('change', function() { if (this.checked) { openModal('modalBoostRam'); showToast('Đã bật BOOST RAM'); } });
+        toggleFixRung.addEventListener('change', function() { if (this.checked) { openModal('modalFixRung'); showToast('Đã bật FIX RUNG'); } });
+
+        btnStateOn.addEventListener('click', () => setAllStates(true));
+        btnStateOff.addEventListener('click', () => setAllStates(false));
+
+        function setAllStates(isOn) {
+            btnStateOn.className = isOn ? "flex-1 py-3.5 rounded-xl font-black text-sm transition-all text-white bg-gradient-to-r from-emerald-600 to-green-500 shadow-glow-green z-10" : "flex-1 py-3.5 rounded-xl font-black text-sm transition-all text-gray-400 z-10";
+            btnStateOff.className = !isOn ? "flex-1 py-3.5 rounded-xl font-black text-sm transition-all text-white bg-gradient-to-r from-red-600 to-rose-500 shadow-glow-red z-10" : "flex-1 py-3.5 rounded-xl font-black text-sm transition-all text-gray-400 z-10";
+            toggleExtractly.checked = isOn;
+            toggleRegFiles.checked = isOn;
+            toggleBoostRam.checked = isOn;
+            toggleFixRung.checked = isOn;
+            showToast(isOn ? 'Đã kích hoạt toàn bộ FILES!' : 'Đã tắt STARTING FILES');
+        }
+
+        document.getElementById('btnBack').addEventListener('click', () => { document.getElementById('genericAlertTitle').textContent = "Quay lại"; openModal('modalGenericAlert'); });
+        document.getElementById('btnMenu').addEventListener('click', () => { document.getElementById('genericAlertTitle').textContent = "Menu Cài Đặt"; openModal('modalGenericAlert'); });
+    </script>
+</body>
+</html>
